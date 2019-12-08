@@ -1,0 +1,22 @@
+#!/usr/bin/python
+
+# git@github.com:MaksimsJuvcenko/xor.git
+
+import argparse, sys
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='XOR input into STDOUT')
+    parser.add_argument('--key', type=str, help='XOR key', required=True)
+    parser.add_argument('--input', type=argparse.FileType('rb'), default=sys.stdin, help='Input file')
+    args = parser.parse_args()
+
+    try:
+        byte = args.input.read(1)
+        n = 0L
+        while byte != "":
+            current_key = args.key[n % len(args.key)]
+            sys.stdout.write(chr(ord(byte) ^ ord(current_key)))
+            byte = args.input.read(1)
+            n += 1
+    finally:
+        args.input.close()
